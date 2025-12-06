@@ -1,64 +1,112 @@
-// Array to store all books
+// ----- Step 2: Storage Array -----
 const myLibrary = [];
 
-// Constructor for Book objects
-class Book {
-  constructor(title, author, pages, isRead) {
-    this.id = crypto.randomUUID();  // Unique ID
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isRead = isRead;
-  }
+
+// ----- Step 2: Constructor -----
+function Book(title, author, pages, read) {
+  this.id = crypto.randomUUID();  // unique ID
+  this.title = title;
+  this.author = author;
+  this.pages = pages;
+  this.read = read;
 }
 
-// Function to create a book and add to library
-function addBookToLibrary(title, author, pages, isRead) {
-  const newBook = new Book(title, author, pages, isRead);
+// Step 6: Prototype method to toggle read status
+Book.prototype.toggleRead = function () {
+  this.read = !this.read;
+};
+
+
+// ----- Step 2: Function to Add Book -----
+function addBookToLibrary(title, author, pages, read) {
+  const newBook = new Book(title, author, pages, read);
   myLibrary.push(newBook);
   displayBooks();
 }
 
-// Function to show all books on screen
+
+// ----- Step 3: Display Books -----
 function displayBooks() {
-  const container = document.getElementById("book-list");
-  container.innerHTML = ""; // clear old display
+  const display = document.getElementById("libraryDisplay");
+  display.innerHTML = ""; // clear display first
 
   myLibrary.forEach((book) => {
     const card = document.createElement("div");
     card.classList.add("book-card");
+    card.dataset.id = book.id; // Step 5
 
     card.innerHTML = `
       <h3>${book.title}</h3>
-      <p><b>Author:</b> ${book.author}</p>
-      <p><b>Pages:</b> ${book.pages}</p>
-      <p><b>Read:</b> ${book.isRead ? "Yes" : "No"}</p>
-      <button onclick="removeBook('${book.id}')">Remove</button>
+      <p><strong>Author:</strong> ${book.author}</p>
+      <p><strong>Pages:</strong> ${book.pages}</p>
+      <p><strong>Read:</strong> ${book.read ? "Yes" : "No"}</p>
+
+      <button class="toggleReadBtn">Toggle Read</button>
+      <button class="deleteBtn">Delete</button>
     `;
 
-    container.appendChild(card);
+    display.appendChild(card);
+  });
+
+  attachCardButtons();
+}
+
+
+// ----- Step 5 & 6: Button Events -----
+function attachCardButtons() {
+  document.querySelectorAll(".deleteBtn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const bookId = e.target.parentElement.dataset.id;
+      removeBook(bookId);
+    });
+  });
+
+  document.querySelectorAll(".toggleReadBtn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const bookId = e.target.parentElement.dataset.id;
+      toggleReadStatus(bookId);
+    });
   });
 }
 
-// Remove book using unique ID
 function removeBook(id) {
-  const index = myLibrary.findIndex(book => book.id === id);
+  const index = myLibrary.findIndex((book) => book.id === id);
   if (index !== -1) {
     myLibrary.splice(index, 1);
     displayBooks();
   }
 }
 
-// Handle form submit
-document.getElementById("bookForm").addEventListener("submit", function (event) {
-  event.preventDefault();
+function toggleReadStatus(id) {
+  const book = myLibrary.find((b) => b.id === id);
+  if (book) {
+    book.toggleRead();
+    displayBooks();
+  }
+}
 
+
+// ----- Step 4: Form Handling -----
+const dialog = document.getElementById("bookFormDialog");
+const newBookBtn = document.getElementById("newBookBtn");
+const closeDialog = document.getElementById("closeDialog");
+const bookForm = document.getElementById("bookForm");
+
+newBookBtn.onclick = () => dialog.showModal();
+closeDialog.onclick = () => dialog.close();
+
+bookForm.addEventListener("submit", (e) => {
+  e.preventDefault(); // prevents page refresh
+
+  // get values
   const title = document.getElementById("title").value;
   const author = document.getElementById("author").value;
   const pages = document.getElementById("pages").value;
-  const isRead = document.getElementById("isRead").checked;
+  const read = document.getElementById("read").checked;
 
-  addBookToLibrary(title, author, pages, isRead);
+  addBookToLibrary(title, author, pages, read);
 
-  this.reset();
+  bookForm.reset();
+  dialog.close();
 });
+
