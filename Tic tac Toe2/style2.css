@@ -1,0 +1,87 @@
+/* 🌸 Korean Pastel Minimal UI */
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: #018ed5; /* very soft pastel blue */
+  padding-top: 30px;
+
+  color: #4a4a4a;
+}
+
+/* Game Board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 12px;
+  margin: 25px;
+
+  background: #c71dc7a2;
+  padding: 20px;
+  border-radius: 22px;
+
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 25px rgba(150, 170, 190, 0.25);
+}
+
+/* Individual Cell */
+.cell {
+  width: 100px;
+  height: 100px;
+
+  background: #dda5e5;
+  border-radius: 18px;
+
+  border: 1px solid #d9e6ff;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #6a7fbf; /* pastel lavender-blue */
+
+  cursor: pointer;
+
+  /* Soft floating effect */
+  box-shadow: 0 4px 10px rgba(180, 200, 220, 0.25);
+  transition: all 0.25s ease;
+}
+
+/* Hover animation — soft lift */
+.cell:hover {
+  transform: translateY(-4px);
+  background: #f1b169;
+  box-shadow: 0 8px 18px rgba(160, 180, 200, 0.35);
+}
+
+/* Controls (buttons etc.) */
+#controls {
+  margin: 15px;
+}
+
+/* Buttons - Pastel Pills */
+button {
+  background: #b9d9ff;
+  border: none;
+  padding: 10px 22px;
+
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  color: #eea2a2;
+  
+  box-shadow: 0 6px 12px rgba(160, 185, 220, 0.4);
+  transition: 0.25s ease;
+}
+
+button:hover {
+  background: #a2c7ff;
+  transform: translateY(-3px);
+}
